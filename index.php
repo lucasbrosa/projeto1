@@ -104,6 +104,7 @@ if (isset($_POST['pesquisar'])) {
         <p class="alert alert-danger">Erro ao buscar produtos.</p>
     <?php endif; ?>
     <!-- Resto do conteúdo da página Home -->
+    
   </div>
 </body>
 </html>
