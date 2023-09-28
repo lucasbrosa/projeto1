@@ -5,8 +5,6 @@ session_start();
 // Inclua o arquivo que contém a definição da classe MinhaAPI
 include 'MinhaAPI.php';
 
-$utils = new Utils();
-
 // Verifique se a variável de sessão "usuario_logado" está definida e é verdadeira
 if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
     // Se o usuário não estiver logado, redirecione para a página de login.php
@@ -41,11 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configurações</title>
-    <!-- Adicione o link para o Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <?php include './assets/templates/header.php'; ?>
 </head>
 <body>
     <div class="container mt-5">
@@ -86,10 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
 
         <a href="index_admin.php" class="btn btn-primary">Voltar para Administração</a>
-    </div>
- 
+    </div> 
 
-    <!-- Adicione os scripts do Bootstrap 5 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-9aSfPBSc5VhKDg7F5RJWrF5v/jpCf5m7aPDv6KoVk5Ck3CU5PzEr9z6wVbcKsSF5" crossorigin="anonymous"></script>
 </body>
 </html>

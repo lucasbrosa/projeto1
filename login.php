@@ -46,11 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <!-- Inclua seus estilos CSS e scripts JavaScript, se necessário -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <?php include './assets/templates/header.php'; ?>
 </head>
 <body>
     <div class="container mt-5">
@@ -75,9 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
-    </div>
-
-    <!-- Adicione o link para o arquivo JS do Bootstrap 5 (opcional, dependendo do seu uso) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Jtbc4UWy5w5lL/TIPbMdm2L5w5wlF5dYlLO2tvmhJABIlFf" crossorigin="anonymous"></script>
+    </div>    
 </body>
 </html>

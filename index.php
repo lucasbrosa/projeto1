@@ -96,10 +96,7 @@ if (isset($_POST['pesquisar'])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Minha Loja - Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Inclua seus estilos CSS e scripts JavaScript, se necessário -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <?php include './assets/templates/header.php'; ?>
 </head>
 <body>
   <div class="container">
@@ -114,37 +111,38 @@ if (isset($_POST['pesquisar'])) {
     <!-- Cards das festas -->
     <h1>Festas</h1>
     <!-- Botões de página dentro do container -->
-<div class="container">
-    <div class="btn-group d-flex flex-wrap" role="group" aria-label="Paginação alfabética">
-        <?php foreach (range('A', 'Z') as $letra) : ?>
-            <?php if (isset($grupos_alfabeticos[$letra]) && !empty($grupos_alfabeticos[$letra])) : ?>
-                <a href="#<?= $letra ?>" class="btn btn-primary"><?= $letra ?></a>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    </div>
-</div>
-
-
-<!-- Lista de itens classificados por letra -->
-<?php foreach (range('A', 'Z') as $letra) : ?>
-    <?php if (isset($grupos_alfabeticos[$letra])) : ?>
-        <h2 id="<?= $letra ?>"><?= $letra ?></h2>
-        <div class="row">
-            <?php foreach ($grupos_alfabeticos[$letra] as $festa) : ?>
-                <div class="col-<?= $cards_por_linha ?> col-mb-<?= $cards_por_linha ?> col-sm-<?= $cards_por_linha ?>">
-                    <div class="card">
-                        <img class="card-img-top" src="<?= $festa['imagem']; ?>" alt="<?= $festa['nome']; ?>" width="<?= $tamanho_fotos ?>" height="<?= $tamanho_fotos ?>">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= $festa['nome']; ?></h5>
-                            <a href="detalheproduto.php?id=<?= $festa['key']; ?>" class="btn btn-primary">Detalhes</a>
-                        </div>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="btn-group d-flex flex-wrap" role="group" aria-label="Paginação alfabética">
+            <?php foreach (range('A', 'Z') as $letra) : ?>
+                <?php if (isset($grupos_alfabeticos[$letra]) && !empty($grupos_alfabeticos[$letra])) : ?>
+                    <a href="#<?= $letra ?>" class="btn btn-primary"><?= $letra ?></a>
+                <?php endif; ?>
             <?php endforeach; ?>
         </div>
-    <?php endif; ?>
-<?php endforeach; ?>
-    <!-- Resto do conteúdo da página Home -->    
-  </div>
+    </div>
+    
+    
+    <!-- Lista de itens classificados por letra -->
+    <?php foreach (range('A', 'Z') as $letra) : ?>
+        <?php if (isset($grupos_alfabeticos[$letra])) : ?>
+            <h2 id="<?= $letra ?>"><?= $letra ?></h2>
+            <div class="row">
+                <?php foreach ($grupos_alfabeticos[$letra] as $festa) : ?>
+                    <div class="col-<?= $cards_por_linha ?> col-mb-<?= $cards_por_linha ?> col-sm-<?= $cards_por_linha ?>">
+                        <div class="card">
+                            <img class="card-img-top" src="<?= $festa['imagem']; ?>" alt="<?= $festa['nome']; ?>" width="<?= $tamanho_fotos ?>" height="<?= $tamanho_fotos ?>">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= $festa['nome']; ?></h5>
+                                <a href="detalheproduto.php?id=<?= $festa['key']; ?>" class="btn btn-primary">Detalhes</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    <?php endforeach; ?>
+    <!-- Resto do conteúdo da página Home --> 
+  </div>   
 </body>
+  <?php include './assets/templates/footer.php'; ?>
 </html>

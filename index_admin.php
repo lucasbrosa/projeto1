@@ -19,6 +19,22 @@ $api = new FirebaseAPI();
 
 $lista_festas = [];
 
+// Função de comparação personalizada para classificar pelo valor da chave "nome"
+function compararPorNome($a, $b) {
+    return strcmp($a['nome'], $b['nome']);
+}
+
+// Verifique se o parâmetro "logout" está definido na URL
+if (isset($_GET["logout"]) && $_GET["logout"] === "true") {
+    // Destruição das variáveis de sessão específicas
+    unset($_SESSION["usuario_logado"]);
+    unset($_SESSION["usuario_token"]);
+
+    // Redirecione para a página de login ou outra página desejada
+    header("Location: login.php"); // Substitua "login.php" pela página desejada
+    exit();
+}
+
 // Verifique se o formulário de pesquisa foi enviado
 if (isset($_POST['pesquisar'])) {
     // Processar a pesquisa
@@ -45,20 +61,19 @@ if (isset($_POST['pesquisar'])) {
           
             $lista_festas[] = $dados_festa;
         }
-    }  
-  
-}
-// Verifique se o parâmetro "logout" está definido na URL
-if (isset($_GET["logout"]) && $_GET["logout"] === "true") {
-    // Destruição das variáveis de sessão específicas
-    unset($_SESSION["usuario_logado"]);
-    unset($_SESSION["usuario_token"]);
+    }
 
-    // Redirecione para a página de login ou outra página desejada
-    header("Location: login.php"); // Substitua "login.php" pela página desejada
-    exit();
-}
-else {
+    // Classifique o array usando a função de comparação personalizada
+    usort($lista_festas, 'compararPorNome');
+
+    // Crie uma matriz para agrupar os itens alfabeticamente
+    $grupos_alfabeticos = [];
+    foreach ($lista_festas as $festa) {
+        $primeira_letra = strtoupper(substr($festa['nome'], 0, 1));
+        $grupos_alfabeticos[$primeira_letra][] = $festa;
+    }
+  
+}else {
     // A pesquisa não foi realizada, mostrar todos os produtos
     $resultado_busca = $api->get('produtos');
     $resultado_busca_produtos_fotos = $api->get('produtos_fotos');
@@ -83,6 +98,16 @@ else {
       
         $lista_festas[] = $dados_festa;        
     }
+
+    // Classifique o array usando a função de comparação personalizada
+    usort($lista_festas, 'compararPorNome');
+
+    // Crie uma matriz para agrupar os itens alfabeticamente
+    $grupos_alfabeticos = [];
+    foreach ($lista_festas as $festa) {
+        $primeira_letra = strtoupper(substr($festa['nome'], 0, 1));
+        $grupos_alfabeticos[$primeira_letra][] = $festa;
+    }
 }
 
 // Resto do código da página Home
@@ -90,10 +115,7 @@ else {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Minha Loja - Administração</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Inclua seus estilos CSS e scripts JavaScript, se necessário -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <?php include './assets/templates/header.php'; ?>
 </head>
 <body>
   <div class="container"> 
@@ -112,7 +134,16 @@ else {
         echo '<div class="alert alert-success">'. $_SESSION['erro'] .'</div>';
         unset($_SESSION['erro']);
     }?>
+
+    <div>
+      <!-- Botão para acessar o formulário de preferencias -->
+      <a href="formulario_preferencias.php" class="btn btn-primary">Configurações</a>
       
+      <!-- Botão para encerrar a sessão do usuário -->
+      <a href="index_admin.php?logout=true" class="btn btn-danger">Sair</a>
+    </div>   
+    
+
     <!-- Formulário para pesquisar a festa -->
     <form method="post" class="mb-4">
         <div class="input-group">
@@ -120,39 +151,49 @@ else {
             <button type="submit" name="pesquisar" class="btn btn-primary">Pesquisar</button>
         </div>
     </form>
-    <!-- Botão para acessar o formulário de preferencias -->
-    <a href="formulario_preferencias.php" class="btn btn-primary">Configurações</a>
-    <!-- Botão para encerrar a sessão do usuário -->
-    <a href="index_admin.php?logout=true" class="btn btn-danger">Sair</a>
 
     
     <!-- Exibir a lista de produtos obtidos da API -->
     <h1>Festas</h1>
     <a href="formulario.php?key=0" class="btn btn-primary">Nova Festa</a>
-    <?php if ($lista_festas !== null) : ?>
-    <div class="row">
-        <?php foreach ($lista_festas as $festa) : ?>
-            <div class="col-<?= $cards_por_linha ?> col-mb-<?= $cards_por_linha ?> col-sm-<?= $cards_por_linha ?>">
-                <div class="card">
-                    <img class="card-img-top" src="<?= $festa['imagem']; ?>" alt="<?= $festa['nome']; ?>" width="<?= $tamanho_fotos ?>" height="<?= $tamanho_fotos ?>">
-                    <div class="card-body">
-                        <h5 class="card-title"><?= $festa['nome']; ?></h5>
-                        <a href="formulario.php?key=<?= $festa['key']; ?>" class="btn btn-warning">Editar</a>
-                        <a href="#" class="btn btn-danger">Excluir</a>
-                        <a href="formulario_fotos.php?key_produto=<?= $festa['key']; ?>" class="btn btn-primary">Fotos</a>
-                    </div>
-                </div>
-            </div>            
 
-      
-        <?php endforeach; ?>
+    <!-- Exibe a paginação e cards -->    
+    
+    <div class="container">
+        <div class="btn-group d-flex flex-wrap" role="group" aria-label="Paginação alfabética">
+            <?php foreach (range('A', 'Z') as $letra) : ?>
+                <?php if (isset($grupos_alfabeticos[$letra]) && !empty($grupos_alfabeticos[$letra])) : ?>
+                    <a href="#<?= $letra ?>" class="btn btn-primary"><?= $letra ?></a>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
     </div>
-    <?php else : ?>
-        <p class="alert alert-danger">Erro ao buscar produtos.</p>
-    <?php endif; ?>
-    <!-- Resto do conteúdo da página Home -->
     
     
+    <!-- Lista de itens classificados por letra -->
+    <?php foreach (range('A', 'Z') as $letra) : ?>
+        <?php if (isset($grupos_alfabeticos[$letra])) : ?>
+            <h2 id="<?= $letra ?>"><?= $letra ?></h2>
+            <div class="row">
+                <?php foreach ($grupos_alfabeticos[$letra] as $festa) : ?>
+                    <div class="col-<?= $cards_por_linha ?> col-mb-<?= $cards_por_linha ?> col-sm-<?= $cards_por_linha ?>">
+                        <div class="card">
+                            <img class="card-img-top" src="<?= $festa['imagem']; ?>" alt="<?= $festa['nome']; ?>" width="<?= $tamanho_fotos ?>" height="<?= $tamanho_fotos ?>">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= $festa['nome']; ?></h5>
+                                <a href="formulario.php?key=<?= $festa['key']; ?>" class="btn btn-warning">Editar</a>
+                                <a href="#" class="btn btn-danger">Excluir</a>
+                                <a href="formulario_fotos.php?key_produto=<?= $festa['key']; ?>" class="btn btn-primary">Fotos</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    <?php endforeach; ?>
+    
+    <!-- Botões de página dentro do container -->
   </div>
+  
 </body>
 </html>
