@@ -9,6 +9,12 @@ $api = new FirebaseAPI();
 
 $lista_festas = [];
 
+// Função de comparação personalizada para classificar pelo valor da chave "nome"
+function compararPorNome($a, $b) {
+    return strcmp($a['nome'], $b['nome']);
+}
+
+
 // Verifique se o formulário de pesquisa foi enviado
 if (isset($_POST['pesquisar'])) {
     // Processar a pesquisa
@@ -33,9 +39,20 @@ if (isset($_POST['pesquisar'])) {
               }
             }
           
-            $lista_festas[] = $dados_festa;
+            $lista_festas[] = $dados_festa;          
+          
         }
-    }  
+    }
+
+    // Classifique o array usando a função de comparação personalizada
+    usort($lista_festas, 'compararPorNome');
+
+    // Crie uma matriz para agrupar os itens alfabeticamente
+    $grupos_alfabeticos = [];
+    foreach ($lista_festas as $festa) {
+        $primeira_letra = strtoupper(substr($festa['nome'], 0, 1));
+        $grupos_alfabeticos[$primeira_letra][] = $festa;
+    }
   
 } else {
     // A pesquisa não foi realizada, mostrar todos os produtos
@@ -62,6 +79,16 @@ if (isset($_POST['pesquisar'])) {
       
         $lista_festas[] = $dados_festa;        
     }
+
+    // Classifique o array usando a função de comparação personalizada
+    usort($lista_festas, 'compararPorNome');
+
+    // Crie uma matriz para agrupar os itens alfabeticamente
+    $grupos_alfabeticos = [];
+    foreach ($lista_festas as $festa) {
+        $primeira_letra = strtoupper(substr($festa['nome'], 0, 1));
+        $grupos_alfabeticos[$primeira_letra][] = $festa;
+    }
 }
 
 // Resto do código da página Home
@@ -84,25 +111,39 @@ if (isset($_POST['pesquisar'])) {
             <button type="submit" name="pesquisar" class="btn btn-primary">Pesquisar</button>
         </div>
     </form>
-       
+    <!-- Cards das festas -->
     <h1>Festas</h1>
-    <?php if ($lista_festas !== null) : ?>
-    <div class="row">
-        <?php foreach ($lista_festas as $festa) : ?>
-            <div class="col-<?= $cards_por_linha ?> col-mb-<?= $cards_por_linha ?> col-sm-<?= $cards_por_linha ?>">
-                <div class="card">
-                    <img class="card-img-top" src="<?= $festa['imagem']; ?>" alt="<?= $festa['nome']; ?>" width="<?= $tamanho_fotos ?>" height="<?= $tamanho_fotos ?>">
-                    <div class="card-body">
-                        <h5 class="card-title"><?= $festa['nome']; ?></h5>
-                        <a href="detalheproduto.php?id=<?= $festa['key']; ?>" class="btn btn-primary">Detalhes</a>
-                    </div>
-                </div>
-            </div>
+    <!-- Botões de página dentro do container -->
+<div class="container">
+    <div class="btn-group d-flex flex-wrap" role="group" aria-label="Paginação alfabética">
+        <?php foreach (range('A', 'Z') as $letra) : ?>
+            <?php if (isset($grupos_alfabeticos[$letra]) && !empty($grupos_alfabeticos[$letra])) : ?>
+                <a href="#<?= $letra ?>" class="btn btn-primary"><?= $letra ?></a>
+            <?php endif; ?>
         <?php endforeach; ?>
     </div>
-    <?php else : ?>
-        <p class="alert alert-danger">Erro ao buscar produtos.</p>
+</div>
+
+
+<!-- Lista de itens classificados por letra -->
+<?php foreach (range('A', 'Z') as $letra) : ?>
+    <?php if (isset($grupos_alfabeticos[$letra])) : ?>
+        <h2 id="<?= $letra ?>"><?= $letra ?></h2>
+        <div class="row">
+            <?php foreach ($grupos_alfabeticos[$letra] as $festa) : ?>
+                <div class="col-<?= $cards_por_linha ?> col-mb-<?= $cards_por_linha ?> col-sm-<?= $cards_por_linha ?>">
+                    <div class="card">
+                        <img class="card-img-top" src="<?= $festa['imagem']; ?>" alt="<?= $festa['nome']; ?>" width="<?= $tamanho_fotos ?>" height="<?= $tamanho_fotos ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $festa['nome']; ?></h5>
+                            <a href="detalheproduto.php?id=<?= $festa['key']; ?>" class="btn btn-primary">Detalhes</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     <?php endif; ?>
+<?php endforeach; ?>
     <!-- Resto do conteúdo da página Home -->    
   </div>
 </body>
