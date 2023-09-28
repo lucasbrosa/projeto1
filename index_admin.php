@@ -137,10 +137,10 @@ if (isset($_POST['pesquisar'])) {
 
     <div>
       <!-- Botão para acessar o formulário de preferencias -->
-      <a href="formulario_preferencias.php" class="btn btn-primary">Configurações</a>
+      <a href="formulario_preferencias.php" class="btn btn-primary"><i class="fas fa-cog"></i> Configurações</a>
       
       <!-- Botão para encerrar a sessão do usuário -->
-      <a href="index_admin.php?logout=true" class="btn btn-danger">Sair</a>
+      <a href="index_admin.php?logout=true" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Sair</a>
     </div>   
     
 
@@ -148,14 +148,14 @@ if (isset($_POST['pesquisar'])) {
     <form method="post" class="mb-4">
         <div class="input-group">
             <input type="text" name="termo_pesquisa" class="form-control" placeholder="Pesquisar festa">
-            <button type="submit" name="pesquisar" class="btn btn-primary">Pesquisar</button>
+            <button type="submit" name="pesquisar" class="btn btn-primary"><i class="fas fa-search"></i> Pesquisar</button>
         </div>
     </form>
 
     
     <!-- Exibir a lista de produtos obtidos da API -->
     <h1>Festas</h1>
-    <a href="formulario.php?key=0" class="btn btn-primary">Nova Festa</a>
+    <a href="formulario.php?key=0" class="btn btn-primary"><i class="fas fa-plus"></i> Nova Festa</a>
 
     <!-- Exibe a paginação e cards -->    
     
@@ -181,9 +181,9 @@ if (isset($_POST['pesquisar'])) {
                             <img class="card-img-top" src="<?= $festa['imagem']; ?>" alt="<?= $festa['nome']; ?>" width="<?= $tamanho_fotos ?>" height="<?= $tamanho_fotos ?>">
                             <div class="card-body">
                                 <h5 class="card-title"><?= $festa['nome']; ?></h5>
-                                <a href="formulario.php?key=<?= $festa['key']; ?>" class="btn btn-warning">Editar</a>
-                                <a href="#" class="btn btn-danger">Excluir</a>
-                                <a href="formulario_fotos.php?key_produto=<?= $festa['key']; ?>" class="btn btn-primary">Fotos</a>
+                                <a href="formulario.php?key=<?= $festa['key']; ?>" class="btn btn-warning"><i class="fas fa-edit"></i> Editar</a>
+                                <a href="#" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Excluir</a>
+                                <a href="formulario_fotos.php?key_produto=<?= $festa['key']; ?>" class="btn btn-primary"><i class="fas fa-images"></i> Fotos</a>
                             </div>
                         </div>
                     </div>

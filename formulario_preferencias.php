@@ -76,10 +76,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="number" id="tamanho_fotos" name="tamanho_fotos" class="form-control" min="100" value="<?= $tamanho_fotos ?>" required>
         </div>
 
-        <button type="submit" class="btn btn-success">Salvar Configurações</button>
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Salvar Configurações</button>
         </form>
 
-        <a href="index_admin.php" class="btn btn-primary">Voltar para Administração</a>
+        <a href="index_admin.php" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Voltar para Administração</a>
     </div> 
 
 </body>

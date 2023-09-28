@@ -50,7 +50,7 @@ if (isset($_GET['id'])) {
     <form action="index.php" method="post" class="mb-4">
         <div class="input-group">
             <input type="text" name="termo_pesquisa" class="form-control" placeholder="Pesquisar festa">
-            <button type="submit" name="pesquisar" class="btn btn-primary">Pesquisar</button>
+            <button type="submit" name="pesquisar" class="btn btn-primary"><i class="fas fa-search"></i> Pesquisar</button>
         </div>
     </form>
 
@@ -118,9 +118,10 @@ if (isset($_GET['id'])) {
                 Erro ao buscar detalhes do produto.
             </div>
         <?php endif; ?>
-    </div>
     
-
+      
+    </div>    
+    
   </body>
   <?php include './assets/templates/footer.php'; ?>
 </html>

@@ -96,10 +96,10 @@ if (isset($_GET['key'])) {
                 <label for="descricao" class="form-label">Descrição</label>
                 <textarea class="form-control" id="descricao" name="descricao" rows="3" required><?= $dados_produto ? $dados_produto['descricao'] : $descricao_padrao_produto?></textarea>
             </div>
-            <button type="submit" class="btn btn-success"> <?= $key == "0" ? 'Adicionar Festa' : 'Atualizar Festa'?></button>
+            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> <?= $key == "0" ? ' Adicionar Festa' : ' Atualizar Festa'?></button>
         </form>
       
-        <a href="index_admin.php" class="btn btn-primary">Voltar para Administração</a>
+        <a href="index_admin.php" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Voltar para Administração</a>
     </div>    
 </body>
 </html>

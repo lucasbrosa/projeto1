@@ -15,7 +15,7 @@ include 'MinhaAPI.php';
 // Crie uma instância da classe MinhaAPI com a URL da API e o token
 $api = new FirebaseAPI();
 
-// Verifique se o formulário foi enviado
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fotos"])) {
     // Diretório onde as fotos serão armazenadas
     $diretorio_destino = './assets/img/festas';
@@ -36,49 +36,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fotos"])) {
             exit();;
         }
 
-        // Verifique o tamanho do arquivo (opcional, mas recomendado)
-        $tamanho_maximo = 5 * 1024 * 1024; // 5MB
-        if ($tamanho_arquivo > $tamanho_maximo) {
-            $_SESSION['erro'] = 'Erro: Tamanho máximo de arquivo excedido (5MB)!';
-            header('Location: formulario_fotos.php?key_produto='. $_POST["key"]);
-            exit();
-        }
-
+        
         // Crie um novo nome para o arquivo
         $novo_nome_arquivo = uniqid() . '.' . $extensao;
 
-        // Redimensione a imagem para 300x300 pixels usando a biblioteca GD
-        list($largura_orig, $altura_orig) = getimagesize($arquivo_temporario);
-        $nova_largura = 300;
-        $nova_altura = 300;
-        $imagem_redimensionada = imagecreatetruecolor($nova_largura, $nova_altura);
-
-        if ($extensao == "jpeg" || $extensao == "jpg") {
-            $imagem_orig = imagecreatefromjpeg($arquivo_temporario);
-        } elseif ($extensao == "png") {
-            $imagem_orig = imagecreatefrompng($arquivo_temporario);
-        } elseif ($extensao == "gif") {
-            $imagem_orig = imagecreatefromgif($arquivo_temporario);
-        }
-
-        imagecopyresized($imagem_redimensionada, $imagem_orig, 0, 0, 0, 0, $nova_largura, $nova_altura, $largura_orig, $altura_orig);
-
-        // Salve a imagem redimensionada no diretório de destino
-        $caminho_completo = $diretorio_destino . $novo_nome_arquivo;
-
-        if ($extensao == "jpeg" || $extensao == "jpg") {
-            imagejpeg($imagem_redimensionada, $caminho_completo, 100);
-        } elseif ($extensao == "png") {
-            imagepng($imagem_redimensionada, $caminho_completo);
-        } elseif ($extensao == "gif") {
-            imagegif($imagem_redimensionada, $caminho_completo);
-        }
-
-        // Libere a memória das imagens
-        imagedestroy($imagem_orig);
-        imagedestroy($imagem_redimensionada);
-
         // Mova o arquivo original para o diretório de destino
+        $caminho_completo = $diretorio_destino . $novo_nome_arquivo;
         move_uploaded_file($arquivo_temporario, $caminho_completo);
 
         $key = $_POST["key"];
@@ -89,14 +52,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fotos"])) {
           'imagem' => $caminho_completo,
         ];
 
-        $api->post('produtos_fotos', $data);
+        $api->post('produtos_fotos', $data, $_SESSION['usuario_token']);
     }
 
     // Redirecione de volta para a página de gerenciamento de fotos com uma mensagem de sucesso
     $_SESSION['sucesso'] = 'Imagens salvas com sucesso!';
     header('Location: formulario_fotos.php?key_produto='. $_POST["key"]);
     exit();
-} 
+}
+
 
 if (isset($_GET['key_foto']) && isset($_GET['key_produto'])) {
     // Recupere o valor do parâmetro "id" da URL
@@ -184,7 +148,7 @@ if (isset($_GET['key_produto'])) {
                 <label for="fotos" class="form-label">Selecione as Fotos (Max: 5MB cada)</label>
                 <input type="file" class="form-control" id="fotos" name="fotos[]" multiple accept="image/*" required>
             </div>
-            <button type="submit" class="btn btn-success">Enviar Fotos</button>
+            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Enviar Fotos</button>
         </form>            
 
         <!-- Listagem das fotos -->
@@ -199,7 +163,7 @@ if (isset($_GET['key_produto'])) {
                                   <img src="<?= $foto['imagem']; ?>" class="card-img-top" alt="Imagem">
                               </div>
                               <div class="card-footer">
-                                  <a href="formulario_fotos.php?key_produto=<?= $key_produto; ?>&key_foto=<?= $foto['key']; ?>" class="btn btn-danger">Excluir</a>
+                                  <a href="formulario_fotos.php?key_produto=<?= $key_produto; ?>&key_foto=<?= $foto['key']; ?>" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Excluir</a>
                               </div>
                           </div>
                       </div>
@@ -212,7 +176,7 @@ if (isset($_GET['key_produto'])) {
             ?>
         </div>
 
-      <a href="index_admin.php" class="btn btn-primary">Voltar para Administração</a>
+      <a href="index_admin.php" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Voltar para Administração</a>
       
     </div>
 

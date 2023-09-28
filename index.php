@@ -105,7 +105,7 @@ if (isset($_POST['pesquisar'])) {
     <form action="index.php" method="post" class="mb-4">
         <div class="input-group">
             <input type="text" name="termo_pesquisa" class="form-control" placeholder="Pesquisar festa">
-            <button type="submit" name="pesquisar" class="btn btn-primary">Pesquisar</button>
+            <button type="submit" name="pesquisar" class="btn btn-primary"><i class="fas fa-search"></i> Pesquisar</button>
         </div>
     </form>
     <!-- Cards das festas -->
@@ -131,9 +131,9 @@ if (isset($_POST['pesquisar'])) {
                     <div class="col-<?= $cards_por_linha ?> col-mb-<?= $cards_por_linha ?> col-sm-<?= $cards_por_linha ?>">
                         <div class="card">
                             <img class="card-img-top" src="<?= $festa['imagem']; ?>" alt="<?= $festa['nome']; ?>" width="<?= $tamanho_fotos ?>" height="<?= $tamanho_fotos ?>">
-                            <div class="card-body">
+                            <div class="card-footer text-center">
                                 <h5 class="card-title"><?= $festa['nome']; ?></h5>
-                                <a href="detalheproduto.php?id=<?= $festa['key']; ?>" class="btn btn-primary">Detalhes</a>
+                                <a href="detalheproduto.php?id=<?= $festa['key']; ?>" class="btn btn-primary btn-sm"><i class="fas fa-info-circle"></i> Detalhes</a>
                             </div>
                         </div>
                     </div>
@@ -141,8 +141,32 @@ if (isset($_POST['pesquisar'])) {
             </div>
         <?php endif; ?>
     <?php endforeach; ?>
-    <!-- Resto do conteúdo da página Home --> 
+
+  <button id="btnTopo" class="btn btn-primary back-to-top" style="display:none;">
+      <i class="fas fa-chevron-up"></i> Voltar para o Topo
+  </button>
+    
   </div>   
 </body>
-  <?php include './assets/templates/footer.php'; ?>
+
+    <script>
+      // Quando a página é rolada, exibe ou oculta o botão "Voltar para o Topo"
+      window.onscroll = function() {
+          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+              document.getElementById("btnTopo").style.display = "block";
+          } else {
+              document.getElementById("btnTopo").style.display = "none";
+          }
+      };
+  
+      // Quando o botão "Voltar para o Topo" é clicado, rola a página até o topo
+      document.getElementById("btnTopo").onclick = function() {
+          document.body.scrollTop = 0; // Para navegadores da web
+          document.documentElement.scrollTop = 0; // Para o Internet Explorer, Edge, Firefox e Chrome
+      };
+  </script>
+
+  
+    <!-- Resto do conteúdo da página Home --> 
+    <?php include './assets/templates/footer.php'; ?>
 </html>
