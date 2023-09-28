@@ -1,12 +1,15 @@
 <?php
+
 $preferencias = [];
 
 // Verifique se o arquivo de preferências existe
 if (file_exists('./config/preferencias.json')) {
     // Lê as preferências do arquivo JSON
-    $preferencias_json = file_get_contents('./config/preferencias.json');
+    $preferencias_json = file_get_contents('./config/preferencias.json'); 
     $preferencias = json_decode($preferencias_json, true);
 }
+
+
 
 // Defina as preferências como variáveis globais para acesso em outras páginas
 $GLOBALS['telefone_whatsapp'] = isset($preferencias['telefone']) ? $preferencias['telefone'] : '';

@@ -2,6 +2,13 @@
 // Inicie ou retome a sessão
 session_start();
 
+// Verifique se a variável de sessão "usuario_logado" está definida e é verdadeira
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+    // Se o usuário não estiver logado, redirecione para a página de login.php
+    header('Location: login.php');
+    exit; // Certifique-se de sair do script após redirecionar
+}
+
 // Inclua o arquivo que contém a definição da classe MinhaAPI
 include 'MinhaAPI.php';
 // Inclua o arquivo que contém as preferencias do site.
@@ -11,7 +18,6 @@ include './config/preferencias.php';
 $api = new FirebaseAPI();
 
 $lista_festas = [];
-
 
 // Verifique se o formulário de pesquisa foi enviado
 if (isset($_POST['pesquisar'])) {
@@ -41,7 +47,18 @@ if (isset($_POST['pesquisar'])) {
         }
     }  
   
-} else {
+}
+// Verifique se o parâmetro "logout" está definido na URL
+if (isset($_GET["logout"]) && $_GET["logout"] === "true") {
+    // Destruição das variáveis de sessão específicas
+    unset($_SESSION["usuario_logado"]);
+    unset($_SESSION["usuario_token"]);
+
+    // Redirecione para a página de login ou outra página desejada
+    header("Location: login.php"); // Substitua "login.php" pela página desejada
+    exit();
+}
+else {
     // A pesquisa não foi realizada, mostrar todos os produtos
     $resultado_busca = $api->get('produtos');
     $resultado_busca_produtos_fotos = $api->get('produtos_fotos');
@@ -105,6 +122,8 @@ if (isset($_POST['pesquisar'])) {
     </form>
     <!-- Botão para acessar o formulário de preferencias -->
     <a href="formulario_preferencias.php" class="btn btn-primary">Configurações</a>
+    <!-- Botão para encerrar a sessão do usuário -->
+    <a href="index_admin.php?logout=true" class="btn btn-danger">Sair</a>
 
     
     <!-- Exibir a lista de produtos obtidos da API -->

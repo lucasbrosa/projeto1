@@ -2,6 +2,13 @@
 // Inicie ou retome a sessão
 session_start();
 
+// Verifique se a variável de sessão "usuario_logado" está definida e é verdadeira
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+    // Se o usuário não estiver logado, redirecione para a página de login.php
+    header('Location: login.php');
+    exit; // Certifique-se de sair do script após redirecionar
+}
+
 // Inclua o arquivo que contém a definição da classe MinhaAPI
 include 'MinhaAPI.php';
 

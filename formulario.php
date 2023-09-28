@@ -1,10 +1,13 @@
 <?php
 // Inicie ou retome a sessão
 session_start();
-//include '../includes/conexao.php'; // Inclua a conexão com o banco de dados
-//include '../includes/funcoes.php'; // Inclua funções úteis, como validação
 
-// Verifique a autenticação do usuário aqui (não implementada neste exemplo)
+// Verifique se a variável de sessão "usuario_logado" está definida e é verdadeira
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+    // Se o usuário não estiver logado, redirecione para a página de login.php
+    header('Location: login.php');
+    exit; // Certifique-se de sair do script após redirecionar
+}
 
 // Inclua o arquivo que contém a definição da classe MinhaAPI
 include 'MinhaAPI.php';
@@ -30,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Salva ou atualiza os dados no Banco de dados.
     if($key == '0'){
-      if ($api->post('produtos', $data)) {
+      if ($api->post('produtos', $data, $_SESSION['usuario_token'])) {
           $_SESSION['sucesso'] = 'Festa adicionada com sucesso!';
           header('Location: index_admin.php');
           exit();
@@ -39,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           exit();
       }
     }else{
-      if ($api->put('produtos/'.$key, $data)) {
+      if ($api->put('produtos/'.$key, $data, $_SESSION['usuario_token'])) {
           $_SESSION['sucesso'] = 'Festa atualizada com sucesso!';
           header('Location: index_admin.php');
           exit();
@@ -77,7 +80,7 @@ if (isset($_GET['key'])) {
         <h1>Formulário Dados da Festa</h1>        
         <!-- Mensagem caso houver erro ao salvar/atualizar os dados. -->
         <?php if (isset($_SESSION['erro'])){
-            echo '<div class="alert alert-success">'. $_SESSION['erro'] .'</div>';
+            echo '<div class="alert alert-danger">'. $_SESSION['erro'] .'</div>';
             unset($_SESSION['erro']);
         }?>
 

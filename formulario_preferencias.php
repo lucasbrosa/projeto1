@@ -2,6 +2,18 @@
 // Inicie ou retome a sessão
 session_start();
 
+// Inclua o arquivo que contém a definição da classe MinhaAPI
+include 'MinhaAPI.php';
+
+$utils = new Utils();
+
+// Verifique se a variável de sessão "usuario_logado" está definida e é verdadeira
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+    // Se o usuário não estiver logado, redirecione para a página de login.php
+    header('Location: login.php');
+    exit; // Certifique-se de sair do script após redirecionar
+}
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $preferencias = [
@@ -12,11 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'tamanho_fotos' => $_POST['tamanho_fotos']
     ];
 
-    // Converte as preferências em JSON
+    // Criptografar os dados e salvá-los em um arquivo JSON
     $json_preferencias = json_encode($preferencias);
-
-    // Salva as preferências em um arquivo
-    file_put_contents('./config/preferencias.json', $json_preferencias);
+    file_put_contents('./config/preferencias.json', $json_preferencias);    
 
     // Redireciona de volta para a página de preferências
     $_SESSION['sucesso'] = 'Configurações salvas com sucesso!';
@@ -75,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit" class="btn btn-success">Salvar Configurações</button>
         </form>
 
-        <a href="index.php" class="btn btn-primary">Voltar para Administração</a>
+        <a href="index_admin.php" class="btn btn-primary">Voltar para Administração</a>
     </div>
  
 
