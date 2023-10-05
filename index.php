@@ -1,4 +1,6 @@
 <?php
+// Inicie ou retome a sessão
+session_start();
 // Inclua o arquivo que contém a definição da classe MinhaAPI
 include 'MinhaAPI.php';
 // Inclua o arquivo que contém as preferencias do site.
@@ -101,6 +103,13 @@ if (isset($_POST['pesquisar'])) {
 <body>
   <div class="container">
     <?php include './assets/templates/navbar.php'; ?>
+
+    <!-- Mensagem caso houver erro ao salvar os dados. -->
+    <?php if (isset($_SESSION['erro'])){
+        echo '<div class="alert alert-danger">'. $_SESSION['erro'] .'</div>';
+        unset($_SESSION['erro']);
+    }?>
+    
     <!-- Formulário para pesquisar a festa -->
     <form action="index.php" method="post" class="mb-4">
         <div class="input-group">

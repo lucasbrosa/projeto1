@@ -49,6 +49,33 @@ class FirebaseAPI {
         $context = stream_context_create($options);
         $response = file_get_contents($url, false, $context);
 
+        if ($response === false) {
+          if($method == 'POST' || $method == 'PUT' || $method == 'DELETE'){
+            $_SESSION['erro'] = 'Erro ao executar requisição. Por favor, comunique ao suporte tecnico!';
+
+            // Destruição das variáveis de sessão específicas
+            unset($_SESSION["usuario_logado"]);
+            unset($_SESSION["usuario_token"]);
+                
+            header('Location: login.php');
+            exit();
+          }elseif($method == 'GET' && $_SESSION["usuario_logado"] == true){
+            $_SESSION['erro'] = 'Erro ao executar requisição. Por favor, comunique ao suporte tecnico!';
+            // Destruição das variáveis de sessão específicas
+            unset($_SESSION["usuario_logado"]);
+            unset($_SESSION["usuario_token"]);
+                
+            header('Location: login.php');
+            exit();
+          }else{
+            $_SESSION['erro'] = 'Erro ao executar requisição. Por favor, comunique ao suporte tecnico!';
+                
+            header('Location: index.php');
+            exit();
+          }
+          
+      }
+
         return json_decode($response, true);
     }
 

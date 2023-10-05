@@ -131,7 +131,7 @@ if (isset($_POST['pesquisar'])) {
 
     <!-- Mensagem caso houver erro ao salvar os dados. -->
     <?php if (isset($_SESSION['erro'])){
-        echo '<div class="alert alert-success">'. $_SESSION['erro'] .'</div>';
+        echo '<div class="alert alert-danger">'. $_SESSION['erro'] .'</div>';
         unset($_SESSION['erro']);
     }?>
 
@@ -182,7 +182,6 @@ if (isset($_POST['pesquisar'])) {
                             <div class="card-body">
                                 <h5 class="card-title"><?= $festa['nome']; ?></h5>
                                 <a href="formulario.php?key=<?= $festa['key']; ?>" class="btn btn-warning"><i class="fas fa-edit"></i> Editar</a>
-                                <a href="#" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Excluir</a>
                                 <a href="formulario_fotos.php?key_produto=<?= $festa['key']; ?>" class="btn btn-primary"><i class="fas fa-images"></i> Fotos</a>
                             </div>
                         </div>
@@ -194,6 +193,6 @@ if (isset($_POST['pesquisar'])) {
     
     <!-- Botões de página dentro do container -->
   </div>
-  
+    
 </body>
 </html>

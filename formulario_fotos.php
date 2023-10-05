@@ -73,7 +73,7 @@ if (isset($_GET['key_foto']) && isset($_GET['key_produto'])) {
 
     if (file_exists($imagem['imagem'])) {
         if (unlink($imagem['imagem'])) {
-            $api->delete('produtos_fotos/'. $key_foto);
+            $api->delete('produtos_fotos/'. $key_foto, $_SESSION['usuario_token']);
 
              $_SESSION['sucesso'] = 'A imagem foi excluída com sucesso!';
             header('Location: formulario_fotos.php?key_produto='. $_GET['key_produto']);
@@ -134,7 +134,7 @@ if (isset($_GET['key_produto'])) {
 
         <!-- Mensagem caso houver erro ao salvar os dados. -->
         <?php if (isset($_SESSION['erro'])){
-            echo '<div class="alert alert-success">'. $_SESSION['erro'] .'</div>';
+            echo '<div class="alert alert-danger">'. $_SESSION['erro'] .'</div>';
             unset($_SESSION['erro']);
         }?>
 
@@ -145,7 +145,7 @@ if (isset($_GET['key_produto'])) {
             <input type="hidden" id="key" name="key" value="<?= $key_produto; ?>">
           
             <div class="mb-3">
-                <label for="fotos" class="form-label">Selecione as Fotos (Max: 5MB cada)</label>
+                <label for="fotos" class="form-label">Selecione as Fotos</label>
                 <input type="file" class="form-control" id="fotos" name="fotos[]" multiple accept="image/*" required>
             </div>
             <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Enviar Fotos</button>
