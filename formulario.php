@@ -53,6 +53,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } 
     
 }
+
+if (isset($_GET['key'])) {
+    // Recupere o valor do parâmetro "id" da URL
+    $key = $_GET['key'];
+    $dados_produto = null;
+
+    if($key != "0"){
+      $dados_produto = $api->get('produtos/'.$key);
+    }
+
+    // Agora você pode usar $produto_id na página para fazer o que desejar, como carregar os detalhes do produto com esse ID.
+}
+
 if (isset($_GET['key'])) {
     // Recupere o valor do parâmetro "id" da URL
     $key = $_GET['key'];
@@ -90,7 +103,7 @@ if (isset($_GET['key'])) {
             </div>
             <div class="mb-3">
                 <label for="preco" class="form-label">Preço</label>
-                <input type="number" class="form-control" id="preco" name="preco" value="<?= $dados_produto ? $dados_produto['preco'] : ''?>" required>
+                <input type="text" class="form-control" id="preco" name="preco" oninput="formatarValor(this)" value="<?= $dados_produto ? $dados_produto['preco'] : ''?>" required>
             </div>
             <div class="mb-3">
                 <label for="descricao" class="form-label">Descrição</label>
@@ -98,8 +111,25 @@ if (isset($_GET['key'])) {
             </div>
             <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> <?= $key == "0" ? ' Adicionar Festa' : ' Atualizar Festa'?></button>
         </form>
+
+        <a href="excluir_produto.php?key=<?= $_GET['key']; ?>" class="btn btn-danger"><i class="fas fa-trash"></i> Excluir festa</a>
       
         <a href="index_admin.php" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Voltar para Administração</a>
     </div>    
+
+    <script>
+        function formatarValor(input) {
+            // Remove tudo que não seja número
+            let valor = input.value.replace(/\D/g, '');
+            
+            // Formate o valor como um número financeiro
+            let valorFormatado = (Number(valor) / 100).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+
+            input.value = valorFormatado;
+        }
+    </script>
 </body>
 </html>

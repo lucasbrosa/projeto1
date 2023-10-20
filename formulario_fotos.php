@@ -15,7 +15,6 @@ include 'MinhaAPI.php';
 // Crie uma instância da classe MinhaAPI com a URL da API e o token
 $api = new FirebaseAPI();
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fotos"])) {
     // Diretório onde as fotos serão armazenadas
     $diretorio_destino = './assets/img/festas';
@@ -28,10 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["fotos"])) {
         $arquivo_temporario = $_FILES["fotos"]["tmp_name"][$key];
 
         // Verifique se é uma imagem válida (opcional, mas recomendado)
-        $extensoes_permitidas = array("jpeg", "jpg", "png", "gif");
+        $extensoes_permitidas = array("jpeg", "jpg", "png", "gif", "webp");
         $extensao = pathinfo($nome_arquivo, PATHINFO_EXTENSION);
         if (!in_array($extensao, $extensoes_permitidas)) {
-            $_SESSION['erro'] = 'Erro: Apenas imagens JPEG, JPG, PNG ou GIF são permitidas';
+            $_SESSION['erro'] = 'Erro: Apenas imagens JPEG, JPG, PNG, GIF ou WebP são permitidas';
             header('Location: formulario_fotos.php?key_produto='. $_POST["key"]);
             exit();;
         }

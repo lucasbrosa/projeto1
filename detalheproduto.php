@@ -64,7 +64,7 @@ if (isset($_GET['id'])) {
                 <?php
                   if ($lista_fotos) {
                       ?>
-                      <div id="carouselFotos" class="carousel slide" data-bs-ride="carousel">
+                      <div id="carouselFotos" class="carousel slide" data-bs-ride="carousel" data-bs-interval="<?= $tempo_carrossel ?>">
                           <div class="carousel-inner">
                               <?php
                               $primeira_imagem = true;
@@ -110,7 +110,7 @@ if (isset($_GET['id'])) {
               
 
             <a href="https://wa.me//<?= $telefone_whatsapp; ?>?text=<?= rawurlencode($mensagem); ?>" class="btn btn-success">
-              <img  src=" ../assets/img/WhatsApp-icone.png" alt="WhatsApp" style="width: 1em">
+              <i class="fab fa-whatsapp"></i>
              
               Solicitar Orçamento</a>
         <?php else : ?>

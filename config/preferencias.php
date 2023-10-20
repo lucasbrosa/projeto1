@@ -17,4 +17,5 @@ $GLOBALS['mensagem_whatsapp'] = isset($preferencias['mensagem']) ? $preferencias
 $GLOBALS['descricao_padrao_produto'] = isset($preferencias['descricao']) ? $preferencias['descricao'] : 'A decoração será montada conforme imagens.';
 $GLOBALS['cards_por_linha'] = isset($preferencias['cards_por_linha']) ? $preferencias['cards_por_linha'] : '4';
 $GLOBALS['tamanho_fotos'] = isset($preferencias['tamanho_fotos']) ? $preferencias['tamanho_fotos'] : '100';
+$GLOBALS['tempo_carrossel'] = isset($preferencias['tempo_carrossel']) ? $preferencias['tempo_carrossel'] : '3000';
 ?>

@@ -50,13 +50,17 @@ if (isset($_POST['pesquisar'])) {
             $dados_festa['key'] = $key;
             $dados_festa['nome'] = $produto['nome'];
 
-            foreach ($resultado_busca_produtos_fotos as $key => $foto) {
-              if($foto['key_produto'] == $dados_festa['key']){
-                $dados_festa['imagem'] = $foto['imagem'];
-                break;
-              }else{
-                $dados_festa['imagem'] = '';
+            if($resultado_busca_produtos_fotos){
+              foreach ($resultado_busca_produtos_fotos as $key => $foto) {
+                if($foto['key_produto'] == $dados_festa['key']){
+                  $dados_festa['imagem'] = $foto['imagem'];
+                  break;
+                }else{
+                  $dados_festa['imagem'] = '';
+                }
               }
+            }else{
+              $dados_festa['imagem'] = '';
             }
           
             $lista_festas[] = $dados_festa;
@@ -87,14 +91,19 @@ if (isset($_POST['pesquisar'])) {
         $dados_festa['key'] = $key;
         $dados_festa['nome'] = $produto['nome'];
 
-        foreach ($resultado_busca_produtos_fotos as $key => $foto) {
-          if($foto['key_produto'] == $dados_festa['key']){
-            $dados_festa['imagem'] = $foto['imagem'];
-            break;
-          }else{
-            $dados_festa['imagem'] = '';
+        if($resultado_busca_produtos_fotos){
+          foreach ($resultado_busca_produtos_fotos as $key => $foto) {
+            if($foto['key_produto'] == $dados_festa['key']){
+              $dados_festa['imagem'] = $foto['imagem'];
+              break;
+            }else{
+              $dados_festa['imagem'] = '';
+            }
           }
+        }else{
+          $dados_festa['imagem'] = '';
         }
+        
       
         $lista_festas[] = $dados_festa;        
     }

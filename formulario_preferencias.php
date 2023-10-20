@@ -19,7 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'mensagem' => $_POST['mensagem'],
         'descricao' => $_POST['descricao'],
         'cards_por_linha' => $_POST['cards_por_linha'],
-        'tamanho_fotos' => $_POST['tamanho_fotos']
+        'tamanho_fotos' => $_POST['tamanho_fotos'],
+        'tempo_carrossel' => $_POST['tempo_carrossel']
     ];
 
     // Criptografar os dados e salvá-los em um arquivo JSON
@@ -68,6 +69,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value="12" <?= ($cards_por_linha == '12') ? 'selected' : '' ?>>1</option>
                 <option value="6" <?= ($cards_por_linha == '6') ? 'selected' : '' ?>>2</option>
                 <option value="4" <?= ($cards_por_linha == '4') ? 'selected' : '' ?>>3</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="tempo_carrossel" class="form-label">Tempo para o carrosel troca as fotos (Página detalhes da festa):</label>
+            <select id="tempo_carrossel" name="tempo_carrossel" class="form-select" required>
+                <option value="1000" <?= ($tempo_carrossel == '1000') ? 'selected' : '' ?>>1 segundo</option>
+                <option value="2000" <?= ($tempo_carrossel == '2000') ? 'selected' : '' ?>>2 segundos</option>
+                <option value="3000" <?= ($tempo_carrossel == '3000') ? 'selected' : '' ?>>3 segundos</option>
+                <option value="4000" <?= ($tempo_carrossel == '4000') ? 'selected' : '' ?>>4 segundos</option>
+                <option value="5000" <?= ($tempo_carrossel == '5000') ? 'selected' : '' ?>>5 segundos</option>
             </select>
         </div>
 
