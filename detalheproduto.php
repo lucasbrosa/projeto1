@@ -96,7 +96,7 @@ if (isset($_GET['id'])) {
 
             <!-- Detalhe do Produto -->
             <h1><?= $detalhes_produto['nome']; ?></h1>
-            <p>Preço: $<?= $detalhes_produto['preco']; ?></p>
+            <p>Preço: <?= $detalhes_produto['preco']; ?></p>
             <p>Descrição: <?= $detalhes_produto['descricao']; ?></p>
             <!-- Resto do conteúdo da página Detalhe do Produto -->
 

@@ -111,8 +111,9 @@ if (isset($_GET['key'])) {
             </div>
             <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> <?= $key == "0" ? ' Adicionar Festa' : ' Atualizar Festa'?></button>
         </form>
-
+        <?php if($key != "0"): ?>
         <a href="excluir_produto.php?key=<?= $_GET['key']; ?>" class="btn btn-danger"><i class="fas fa-trash"></i> Excluir festa</a>
+        <?php endif; ?>
       
         <a href="index_admin.php" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Voltar para Administração</a>
     </div>    

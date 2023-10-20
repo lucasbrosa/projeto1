@@ -44,27 +44,29 @@ if (isset($_POST['pesquisar'])) {
     $resultado_busca_produtos_fotos = $api->get('produtos_fotos');
     
     // Iterar pelos registros para encontrar correspondências
-    foreach ($resultado_busca_produtos as $key => $produto) {
-        if (strpos(strtolower($produto['nome']), strtolower($termo_pesquisa)) !== false) {
-            $dados_festa = [];
-            $dados_festa['key'] = $key;
-            $dados_festa['nome'] = $produto['nome'];
-
-            if($resultado_busca_produtos_fotos){
-              foreach ($resultado_busca_produtos_fotos as $key => $foto) {
-                if($foto['key_produto'] == $dados_festa['key']){
-                  $dados_festa['imagem'] = $foto['imagem'];
-                  break;
-                }else{
-                  $dados_festa['imagem'] = '';
+    if ($resultado_busca_produtos){
+      foreach ($resultado_busca_produtos as $key => $produto) {
+          if (strpos(strtolower($produto['nome']), strtolower($termo_pesquisa)) !== false) {
+              $dados_festa = [];
+              $dados_festa['key'] = $key;
+              $dados_festa['nome'] = $produto['nome'];
+  
+              if($resultado_busca_produtos_fotos){
+                foreach ($resultado_busca_produtos_fotos as $key => $foto) {
+                  if($foto['key_produto'] == $dados_festa['key']){
+                    $dados_festa['imagem'] = $foto['imagem'];
+                    break;
+                  }else{
+                    $dados_festa['imagem'] = '';
+                  }
                 }
+              }else{
+                $dados_festa['imagem'] = '';
               }
-            }else{
-              $dados_festa['imagem'] = '';
-            }
-          
-            $lista_festas[] = $dados_festa;
-        }
+            
+              $lista_festas[] = $dados_festa;
+          }
+      }
     }
 
     // Classifique o array usando a função de comparação personalizada
@@ -82,30 +84,31 @@ if (isset($_POST['pesquisar'])) {
     $resultado_busca = $api->get('produtos');
     $resultado_busca_produtos_fotos = $api->get('produtos_fotos');
 
-    // Agora $categories contém todos os registros          
+    // Agora $categories contém todos os registros 
     
-    
-    // Iterar pelos registros para encontrar correspondências
-    foreach ($resultado_busca as $key => $produto) {        
-        $dados_festa = [];
-        $dados_festa['key'] = $key;
-        $dados_festa['nome'] = $produto['nome'];
+    if($resultado_busca){
+      // Iterar pelos registros para encontrar correspondências
+      foreach ($resultado_busca as $key => $produto) {        
+          $dados_festa = [];
+          $dados_festa['key'] = $key;
+          $dados_festa['nome'] = $produto['nome'];
 
-        if($resultado_busca_produtos_fotos){
-          foreach ($resultado_busca_produtos_fotos as $key => $foto) {
-            if($foto['key_produto'] == $dados_festa['key']){
-              $dados_festa['imagem'] = $foto['imagem'];
-              break;
-            }else{
-              $dados_festa['imagem'] = '';
+          if($resultado_busca_produtos_fotos){
+            foreach ($resultado_busca_produtos_fotos as $key => $foto) {
+              if($foto['key_produto'] == $dados_festa['key']){
+                $dados_festa['imagem'] = $foto['imagem'];
+                break;
+              }else{
+                $dados_festa['imagem'] = '';
+              }
             }
+          }else{
+            $dados_festa['imagem'] = '';
           }
-        }else{
-          $dados_festa['imagem'] = '';
-        }
-        
-      
-        $lista_festas[] = $dados_festa;        
+
+
+          $lista_festas[] = $dados_festa;        
+      }
     }
 
     // Classifique o array usando a função de comparação personalizada
